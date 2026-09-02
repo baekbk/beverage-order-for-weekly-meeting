@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Very Vary 커피 주문</title>
+<style>
+  :root{
+    --name-col:64px;
+    --bg-a:#ffe3d6;
+    --bg-b:#f6dcff;
+    --bg-c:#d8f7ec;
+    --card: rgba(255,255,255,0.72);
+    --ink:#463a58;
+    --ink-soft:#8b7fa0;
+    --accent:#ff8fa6;
+    --accent-deep:#f2678a;
+    --accent2:#93b4f5;
+    --accent2b:#c3a6f7;
+    --accent2-deep:#7c8fe0;
+    --gold:#f6c667;
+    --gold-deep:#e0a83f;
+    --border: rgba(120,90,140,0.16);
+    --danger:#ff7a90;
+    --danger-deep:#e14f6c;
+    --shadow: 0 4px 16px rgba(150,110,170,0.14);
+    --glass-hi: rgba(255,255,255,0.55);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg-a:#241a2e;
+      --bg-b:#1c2436;
+      --bg-c:#16302c;
+      --card: rgba(40,32,50,0.62);
+      --ink:#f1e6fb;
+      --ink-soft:#b6a8cf;
+      --accent:#ff9db2;
+      --accent-deep:#e5738f;
+      --accent2:#9bb6ff;
+      --accent2b:#cbb2ff;
+      --accent2-deep:#7e93e8;
+      --gold:#f6c667;
+      --gold-deep:#d9a441;
+      --border: rgba(255,255,255,0.12);
+      --danger:#ff8a9c;
+      --danger-deep:#d65a76;
+      --shadow: 0 4px 16px rgba(0,0,0,0.4);
+      --glass-hi: rgba(255,255,255,0.08);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg-a:#241a2e;
+    --bg-b:#1c2436;
+    --bg-c:#16302c;
+    --card: rgba(40,32,50,0.62);
+    --ink:#f1e6fb;
+    --ink-soft:#b6a8cf;
+    --accent:#ff9db2;
+    --accent-deep:#e5738f;
+    --accent2:#9bb6ff;
+    --accent2b:#cbb2ff;
+    --accent2-deep:#7e93e8;
+    --gold:#f6c667;
+    --gold-deep:#d9a441;
+    --border: rgba(255,255,255,0.12);
+    --danger:#ff8a9c;
+    --danger-deep:#d65a76;
+    --shadow: 0 4px 16px rgba(0,0,0,0.4);
+    --glass-hi: rgba(255,255,255,0.08);
+  }
+  *{box-sizing:border-box;}
+  html,body{ min-height:100%; }
+  body{
+    margin:0;
+    background: radial-gradient(circle at 12% 8%, var(--bg-a), transparent 45%),
+                radial-gradient(circle at 90% 15%, var(--bg-b), transparent 50%),
+                radial-gradient(circle at 30% 90%, var(--bg-c), transparent 55%),
+                linear-gradient(160deg, var(--bg-a) 0%, var(--bg-b) 45%, var(--bg-c) 100%);
+    background-attachment: fixed;
+    background-size: cover;
+    color:var(--ink);
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+    padding-bottom:60px;
+  }
+  .divider{
+    border:none;
+    height:1px;
+    max-width:700px;
+    margin:26px auto;
+    background: linear-gradient(90deg, transparent, rgba(120,90,140,0.28), transparent);
+  }
+  /* ---------- 메뉴판 ---------- */
+  .board-inner{
+    max-width:760px;
+    margin:0 auto;
+    padding:28px 16px 4px;
+  }
+  .board-brand{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:2px;
+    margin-bottom:18px;
+  }
+  .board-brand svg{
+    width:36px;
+    height:36px;
+    margin-bottom:2px;
+  }
+  .board-brand .brand-name{
+    font-family: Georgia, 'Times New Roman', serif;
+    font-style:italic;
+    font-size:28px;
+    font-weight:700;
+    color:var(--accent-deep);
+    letter-spacing:0.5px;
+  }
+  .board-brand .brand-sub{
+    font-size:10px;
+    letter-spacing:3px;
+    color:var(--ink-soft);
+    font-weight:700;
+  }
+  .board-note{
+    text-align:center;
+    font-size:11px;
+    color:var(--ink-soft);
+    margin-bottom:18px;
+    line-height:1.6;
+  }
+  .board-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px 18px;
+  }
+  @media (max-width:640px){
+    .board-grid{grid-template-columns:1fr;}
+  }
+  .board-cat{
+    background:var(--card);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:12px 14px;
+  }
+  .board-cat h4{
+    margin:0 0 8px;
+    font-size:13px;
+    font-weight:800;
+    color:var(--accent-deep);
+    letter-spacing:0.3px;
+    padding-bottom:6px;
+    border-bottom:1px solid var(--border);
+  }
+  .board-cat ul{
+    list-style:none;
+    margin:0;
+    padding:0;
+  }
+  .board-cat li{
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    font-size:12.5px;
+    padding:3px 0;
+    color:var(--ink);
+  }
+  .board-cat li .p{
+    color:var(--ink-soft);
+    font-weight:600;
+    flex-shrink:0;
+  }
+  .board-cat li .tag{
+    font-size:9px;
+    font-weight:800;
+    color:#fff;
+    background:var(--gold);
+    border-radius:5px;
+    padding:1px 4px;
+    margin-right:4px;
+    vertical-align:middle;
+  }
+  /* ---------- 컨테이너 공통 ---------- */
+  .container{
+    max-width:640px;
+    margin:0 auto;
+    padding:0 16px 40px;
+  }
+  .date-line{
+    text-align:center;
+    font-size:clamp(21px, 6.5vw, 26px);
+    color:var(--ink);
+    margin:6px 0 4px;
+    font-weight:800;
+    letter-spacing:0.3px;
+  }
+  .time-line{
+    text-align:center;
+    font-size:clamp(17px, 5.5vw, 22px);
+    color:var(--accent-deep);
+    margin:0 0 6px;
+    font-weight:700;
+    font-variant-numeric:tabular-nums;
+    letter-spacing:1px;
+  }
+  h2.section-title{
+    font-size:16px;
+    font-weight:800;
+    margin:0;
+    padding-bottom:6px;
+    border-bottom:2px solid var(--accent);
+    display:inline-block;
+  }
+  .tabbar{
+    display:flex;
+    gap:5px;
+    background:var(--card);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:5px;
+    margin-bottom:18px;
+    box-shadow:var(--shadow);
+  }
+  .tab-btn{
+    flex:1;
+    border:none;
+    background:transparent;
+    padding:9px 4px;
+    border-radius:10px;
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--ink-soft);
+    cursor:pointer;
+    transition:background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    white-space:nowrap;
+  }
+  .tab-btn.active{
+    background:linear-gradient(155deg, var(--accent), var(--accent-deep));
+    color:#fff;
+    box-shadow:0 3px 8px rgba(242,103,138,0.32), inset 0 1px 0 var(--glass-hi);
+  }
+  .tab-viewport{
+    overflow:hidden;
+    touch-action: pan-y;
+  }
+  .tab-track{
+    display:flex;
+    will-change:transform;
+  }
+  .tab-panel{
+    flex:0 0 100%;
+    width:100%;
+    box-sizing:border-box;
+    padding-right:2px;
+  }
+  .panel-head{
+    text-align:center;
+    margin-bottom:16px;
+  }
+  .panel-head h2.section-title{
+    display:inline-block;
+    margin-bottom:12px;
+  }
+  .panel-head #closeOrderBtn{
+    margin:0 auto;
+  }
+  .close-note{
+    max-width:480px;
+    margin:10px auto 0;
+    font-size:11.5px;
+    line-height:1.6;
+    color:var(--ink-soft);
+  }
+  #closeOrderBtn{
+    background:linear-gradient(155deg, var(--danger), var(--danger-deep));
+    color:#fff;
+    border:none;
+    padding:9px 16px;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow: 0 3px 8px rgba(225,79,108,0.35), inset 0 1px 0 var(--glass-hi);
+    flex-shrink:0;
+  }
+  #closeOrderBtn:disabled{
+    background:var(--border);
+    color:var(--ink-soft);
+    box-shadow:none;
+    opacity:0.8;
+    cursor:default;
+  }
+  .closed-banner{
+    text-align:center;
+    color:var(--danger-deep);
+    font-weight:700;
+    font-size:14px;
+    margin-bottom:16px;
+    display:none;
+  }
+  /* ---------- 멤버 주문 카드 ---------- */
+  .member-row{
+    background:var(--card);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:12px 14px;
+    margin-bottom:12px;
+    box-shadow:var(--shadow);
+  }
+  .rec-line{
+    margin:0 0 8px calc(var(--name-col) + 10px);
+    display:none;
+  }
+  .row-main{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    row-gap:8px;
+  }
+  .member-name{
+    font-weight:700;
+    font-size:15px;
+    width:var(--name-col);
+    flex-shrink:0;
+  }
+  select{
+    appearance:none;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    width:100%;
+    padding:10px 32px 10px 13px;
+    border-radius:11px;
+    border:1.5px solid var(--border);
+    background:rgba(255,255,255,0.6);
+    color:var(--ink);
+    font-family:inherit;
+    font-size:13.5px;
+    font-weight:600;
+    letter-spacing:0.1px;
+    cursor:pointer;
+    box-shadow:0 1px 2px rgba(70,58,88,0.05);
+    transition:border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  select:hover{ border-color:var(--accent); }
+  select:focus{
+    outline:none;
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(255,143,166,0.20);
+  }
+  :root[data-theme="dark"] select{ background:rgba(0,0,0,0.22); }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) select{ background:rgba(0,0,0,0.22); }
+  }
+  .select-wrap{
+    position:relative;
+    display:inline-flex;
+    flex:1 1 150px;
+    min-width:0;
+  }
+  .select-wrap::after{
+    content:'';
+    position:absolute;
+    right:13px;
+    top:50%;
+    width:7px;
+    height:7px;
+    border-right:2px solid var(--ink-soft);
+    border-bottom:2px solid var(--ink-soft);
+    transform:translateY(-65%) rotate(45deg);
+    pointer-events:none;
+  }
+  .select-wrap select{ width:100%; }
+  .depth1-select{
+    min-width:0;
+  }
+  select:disabled{ opacity:0.6; cursor:default; }
+  .btn-group{
+    display:flex;
+    gap:6px;
+    align-items:center;
+    flex-shrink:0;
+  }
+  .row-option{
+    display:none;
+    align-items:center;
+    gap:8px;
+    margin:10px 0 0 calc(var(--name-col) + 10px);
+  }
+  .opt-label{
+    font-size:12px;
+    color:var(--ink-soft);
+    font-weight:700;
+    flex-shrink:0;
+  }
+  .opt-chips{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+    flex:1 1 auto;
+  }
+  .opt-chip{
+    border:1px solid var(--border);
+    background:rgba(255,255,255,0.5);
+    color:var(--ink-soft);
+    border-radius:999px;
+    padding:6px 13px;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:transform 0.1s ease, background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .opt-chip:active{ transform:translateY(1px); }
+  .opt-chip.active{
+    background:linear-gradient(135deg, var(--accent2), var(--accent2b));
+    border-color:transparent;
+    color:#fff;
+    box-shadow:0 2px 6px rgba(124,143,224,0.35), inset 0 1px 0 var(--glass-hi);
+  }
+  .opt-chip:disabled{
+    opacity:0.55;
+    cursor:default;
+  }
+  :root[data-theme="dark"] .opt-chip{ background:rgba(0,0,0,0.2); }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .opt-chip{ background:rgba(0,0,0,0.2); }
+  }
+  button.action{
+    border:none;
+    border-radius:9px;
+    padding:7px 13px;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    transition:transform 0.1s ease;
+  }
+  button.action:active{ transform:translateY(1px); }
+  .save-btn{
+    background:linear-gradient(155deg, var(--accent), var(--accent-deep));
+    color:#fff;
+    box-shadow:0 3px 8px rgba(242,103,138,0.35), inset 0 1px 0 var(--glass-hi);
+  }
+  .save-btn:disabled{
+    background:var(--border);
+    color:var(--ink-soft);
+    box-shadow:none;
+    cursor:default;
+  }
+  .modify-btn{
+    background:linear-gradient(135deg, var(--accent2), var(--accent2b));
+    color:#fff;
+    border:none;
+    box-shadow:0 3px 8px rgba(124,143,224,0.38), inset 0 1px 0 var(--glass-hi);
+  }
+  .modify-btn:disabled{
+    background:var(--border);
+    color:var(--ink-soft);
+    border:none;
+    box-shadow:none;
+    cursor:default;
+  }
+  .recommend-btn{
+    background:rgba(255,255,255,0.55);
+    border:1px solid var(--gold);
+    color:var(--gold-deep);
+    border-radius:9px;
+    padding:6px 11px;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+    box-shadow:0 2px 6px rgba(224,168,63,0.25), inset 0 1px 0 var(--glass-hi);
+    transition:transform 0.1s ease;
+  }
+  .recommend-btn:active{ transform:translateY(1px); }
+  .recommend-btn:disabled{
+    opacity:0.5;
+    cursor:default;
+    box-shadow:none;
+  }
+  .saved-label{
+    font-size:12px;
+    color:var(--ink-soft);
+    margin:8px 0 0 calc(var(--name-col) + 10px);
+  }
+  .saved-label b{
+    color:var(--accent-deep);
+  }
+  .status-tag{
+    font-size:12px;
+    font-weight:700;
+    border-radius:999px;
+    padding:2px 10px;
+    vertical-align:middle;
+    margin-left:2px;
+  }
+  .status-tag.unconfirmed{
+    background:rgba(255,143,166,0.18);
+    color:var(--accent-deep);
+  }
+  .status-tag.confirmed{
+    background:rgba(124,143,224,0.18);
+    color:var(--accent2-deep);
+  }
+  section.block{ margin-top:6px; }
+  .today-list{
+    background:var(--card);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:12px 16px;
+    box-shadow:var(--shadow);
+    min-height:20px;
+  }
+  .today-list .empty{
+    color:var(--ink-soft);
+    font-size:13px;
+  }
+  .today-row{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:2px 10px;
+    padding:6px 0;
+    border-bottom:1px dashed var(--border);
+    font-size:14px;
+  }
+  .today-row:last-child{border-bottom:none;}
+  .today-total{
+    margin-top:8px;
+    padding-top:10px;
+    border-top:2px solid var(--border);
+    text-align:right;
+    font-weight:800;
+    font-size:14px;
+    color:var(--accent-deep);
+  }
+  .today-row .d{font-weight:700;color:var(--ink);}
+  .today-row .m{color:var(--accent-deep);font-weight:600;text-align:right;}
+  .stats-grid{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .stats-card{
+    background:var(--card);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:12px 16px;
+    box-shadow:var(--shadow);
+  }
+  .stats-card h3{
+    margin:0 0 8px;
+    font-size:14px;
+    font-weight:800;
+  }
+  .stats-card ul{
+    list-style:none;
+    margin:0;
+    padding:0;
+  }
+  .stats-card li{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    padding:3px 0;
+    color:var(--ink);
+  }
+  .stats-card li .cnt{
+    color:var(--ink-soft);
+    font-weight:600;
+  }
+  .stats-empty{
+    color:var(--ink-soft);
+    font-size:13px;
+  }
+  .footnote{
+    text-align:center;
+    font-size:11px;
+    color:var(--ink-soft);
+    margin-top:30px;
+  }
+  @media (max-width:420px){
+    .member-name{width:48px;font-size:14px;}
+    :root{ --name-col:48px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="board-inner">
+  <div class="board-brand">
+    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M24 4C15 8 10 16 12 26c1.5 7 7 12 12 14 5-2 10.5-7 12-14 2-10-3-18-12-22z" fill="var(--accent-deep)" opacity="0.85"/>
+      <path d="M24 10c0 12 0 22 0 30" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
+    </svg>
+    <div class="brand-name">Very Vary</div>
+    <div class="brand-sub">DESSERT CAFE</div>
+  </div>
+  <div class="board-note">*커피 메뉴는 2샷 기준 · 디카페인 변경 / 우유→오트 변경 가능 · 입주사 직원 제조음료 10% 할인</div>
+  <div class="board-grid">
+    <div class="board-cat">
+      <h4>Coffee</h4>
+      <ul>
+        <li><span>에스프레소</span><span class="p">3.8</span></li>
+        <li><span>아메리카노</span><span class="p">3.8</span></li>
+        <li><span>카페라떼</span><span class="p">4.3</span></li>
+        <li><span>카푸치노</span><span class="p">4.3</span></li>
+        <li><span>바닐라라떼</span><span class="p">4.8</span></li>
+        <li><span>카라멜라떼</span><span class="p">4.8</span></li>
+        <li><span>카페모카</span><span class="p">4.8</span></li>
+        <li><span>돌체라떼(연유라떼)</span><span class="p">5.0</span></li>
+        <li><span>아인슈페너</span><span class="p">4.8</span></li>
+        <li><span>크림라떼</span><span class="p">5.0</span></li>
+        <li><span>베리베리라떼</span><span class="p">5.5</span></li>
+      </ul>
+    </div>
+    <div class="board-cat">
+      <h4>Latte &amp; Tea</h4>
+      <ul>
+        <li><span><span class="tag">NEW</span>오곡라떼</span><span class="p">4.5</span></li>
+        <li><span>초콜릿라떼</span><span class="p">4.5</span></li>
+        <li><span>말차라떼</span><span class="p">4.5</span></li>
+        <li><span>딸기청라떼(Ice)</span><span class="p">5.5</span></li>
+        <li><span><span class="tag">BEST</span>복숭아 아이스티</span><span class="p">4.0</span></li>
+        <li><span>수제밀크티</span><span class="p">4.8</span></li>
+        <li><span>꿀대추차(국산)</span><span class="p">4.8</span></li>
+        <li><span>과일청차</span><span class="p">4.8</span></li>
+      </ul>
+    </div>
+    <div class="board-cat">
+      <h4>Ade &amp; Smoothie</h4>
+      <ul>
+        <li><span>과일청 에이드</span><span class="p">5.0</span></li>
+        <li><span>요거트 스무디</span><span class="p">6.0</span></li>
+      </ul>
+    </div>
+    <div class="board-cat">
+      <h4>Blend Tea</h4>
+      <ul>
+        <li><span>허니 유자 페퍼민트</span><span class="p">4.0</span></li>
+        <li><span>허니 애플 히비스커스</span><span class="p">4.0</span></li>
+        <li><span>허니 라임 루이보스</span><span class="p">4.0</span></li>
+        <li><span>허니 자몽 얼그레이</span><span class="p">4.0</span></li>
+        <li><span>허니 레몬 캐모마일</span><span class="p">4.0</span></li>
+      </ul>
+    </div>
+    <div class="board-cat">
+      <h4>TWG Tea</h4>
+      <ul>
+        <li><span>1837블랙티</span><span class="p">4.8</span></li>
+        <li><span>프렌치얼그레이</span><span class="p">4.8</span></li>
+        <li><span>그랜드웨딩</span><span class="p">4.8</span></li>
+        <li><span>실버문티</span><span class="p">4.8</span></li>
+        <li><span>캐모마일</span><span class="p">5.0</span></li>
+        <li><span>크림카라멜</span><span class="p">5.0</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<div class="container">
+  <div class="date-line" id="dateLine"></div>
+  <div class="time-line" id="timeLine"></div>
+
+  <hr class="divider" style="margin:18px auto 22px;">
+
+  <div class="tabbar">
+    <button class="tab-btn active" data-idx="0">메뉴 주문</button>
+    <button class="tab-btn" data-idx="1">오늘의 주문 현황</button>
+    <button class="tab-btn" data-idx="2">누적 주문 통계</button>
+  </div>
+
+  <div class="tab-viewport" id="tabViewport">
+    <div class="tab-track" id="tabTrack">
+
+      <div class="tab-panel">
+        <div class="panel-head">
+          <h2 class="section-title">메뉴 주문</h2>
+          <div><button id="closeOrderBtn">주문 마감</button></div>
+          <p class="close-note">*주문 마감 버튼은 주문자가 주문 마감 시간을 미리 구성원에게 공유하고 주문을 확정하기 위해 클릭/터치합니다. 주문이 확정되고 나면 구성원들은 주문을 변경할 수 없습니다.</p>
+        </div>
+        <div class="closed-banner" id="closedBanner">오늘 주문이 마감되었습니다</div>
+        <div id="memberList"></div>
+      </div>
+
+      <div class="tab-panel">
+        <h2 class="section-title">오늘의 주문 현황 <span id="todayStatus" class="status-tag"></span></h2>
+        <div style="height:12px;"></div>
+        <div class="today-list" id="todayList"><span class="empty">아직 저장된 주문이 없습니다</span></div>
+      </div>
+
+      <div class="tab-panel">
+        <h2 class="section-title">멤버별 누적 주문 통계</h2>
+        <div style="height:12px;"></div>
+        <div class="stats-grid" id="statsGrid"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footnote">Very Vary · 입주사 직원 10% 할인 적용 안내는 현장 결제 시 확인해주세요</div>
+</div>
+
+<script>
+/* ---------- 기본 데이터 ---------- */
+const MEMBERS = ["탁근찬","이윤라","이은우","김규동","원민경","김형효","백부경","김향","심규빈","서준영","홍석진","김혜림"];
+
+const OPT_DECAF = "디카페인으로 변경";
+const OPT_SHOT1 = "1샷 추가";
+const OPT_SHOT2 = "2샷 추가";
+const OPT_OAT = "우유를 오트밀크로 변경";
+const OPT_VANILLA = "바닐라 시럽 추가";
+const OPT_HAZELNUT = "헤이즐넛 시럽 추가";
+
+// 같은 그룹 안에서는 동시에 하나만 선택 가능 (다시 클릭하면 해제도 가능)
+const EXCLUSIVE_GROUPS = [
+  [OPT_SHOT1, OPT_SHOT2],
+  [OPT_VANILLA, OPT_HAZELNUT]
+];
+
+const MENU = [
+  {name:"에스프레소", temps:["Hot"], options:[OPT_DECAF,OPT_SHOT1,OPT_SHOT2,OPT_VANILLA,OPT_HAZELNUT]},
+  {name:"아메리카노", temps:["Hot","Ice"], options:[OPT_DECAF,OPT_SHOT1,OPT_SHOT2,OPT_VANILLA,OPT_HAZELNUT]},
+  {name:"카페라떼", temps:["Hot","Ice"], options:[OPT_DECAF,OPT_SHOT1,OPT_SHOT2,OPT_OAT,OPT_VANILLA,OPT_HAZELNUT]},
+  {name:"카푸치노", temps:["Hot"], options:[OPT_DECAF,OPT_SHOT1,OPT_SHOT2,OPT_OAT,OPT_VANILLA,OPT_HAZELNUT]},
+  {name:"바닐라라떼", temps:["Hot","Ice"], options:[OPT_DECAF,OPT_SHOT1,OPT_SHOT2,OPT_OAT,OPT_VANILLA,OPT_HAZELNUT]},
+  {name:"카라멜라떼", temps:["Hot","Ice"], options:[OPT_DECAF,OPT_SHOT1,OPT_SHOT2,OPT_OAT,OPT_VANILLA,OPT_HAZELNUT]},
+  {name:"카페모카", temps:["Hot","Ice"], options:[OPT_DECAF,OPT_SHOT1,OPT_SHOT2,OPT_OAT,OPT_VANILLA,OPT_HAZELNUT]},
+  {name:"돌체라떼(연유라떼)", temps:["Ice"], options:[OPT_DECAF,OPT_SHOT1,OPT_SHOT2,OPT_VANILLA,OPT_HAZELNUT]},
+  {name:"아인슈페너", temps:["Ice"], options:[OPT_DECAF,OPT_SHOT1,OPT_SHOT2,OPT_VANILLA,OPT_HAZELNUT]},
+  {name:"크림라떼", temps:["Ice"], options:[OPT_DECAF,OPT_SHOT1,OPT_SHOT2,OPT_OAT,OPT_VANILLA,OPT_HAZELNUT]},
+  {name:"베리베리라떼(크림라떼+슬라이스치즈)", temps:["Ice"], options:[OPT_DECAF,OPT_SHOT1,OPT_SHOT2,OPT_OAT,OPT_VANILLA,OPT_HAZELNUT]},
+  {name:"오곡라떼", temps:["Hot","Ice"], options:[OPT_SHOT1,OPT_SHOT2,OPT_OAT,OPT_VANILLA,OPT_HAZELNUT]},
+  {name:"초콜릿라떼", temps:["Hot","Ice"], options:[OPT_OAT,OPT_VANILLA,OPT_HAZELNUT]},
+  {name:"말차라떼(제주우유가능)", temps:["Hot","Ice"], options:[OPT_OAT,OPT_VANILLA,OPT_HAZELNUT]},
+  {name:"딸기청라떼", temps:["Ice"], options:[OPT_OAT]},
+  {name:"복숭아 아이스티", temps:["Ice"], options:[]},
+  {name:"수제밀크티", temps:["Hot","Ice"], options:[OPT_OAT,OPT_VANILLA,OPT_HAZELNUT]},
+  {name:"꿀대추차(국산)", temps:["Hot","Ice"], options:[]},
+  {name:"과일청차(레몬)", temps:["Hot","Ice"], options:[]},
+  {name:"과일청차(유자)", temps:["Hot","Ice"], options:[]},
+  {name:"과일청차(자몽)", temps:["Hot","Ice"], options:[]},
+  {name:"과일청 에이드(딸기)", temps:["Ice"], options:[]},
+  {name:"과일청 에이드(레몬)", temps:["Ice"], options:[]},
+  {name:"과일청 에이드(유자)", temps:["Ice"], options:[]},
+  {name:"과일청 에이드(청포도)", temps:["Ice"], options:[]},
+  {name:"과일청 에이드(패션후르츠)", temps:["Ice"], options:[]},
+  {name:"과일청 에이드(납작복숭아)", temps:["Ice"], options:[]},
+  {name:"요거트 스무디(딸기)", temps:["Ice"], options:[]},
+  {name:"요거트 스무디(납작복숭아)", temps:["Ice"], options:[]},
+  {name:"허니 유자 페퍼민트", temps:["Hot","Ice"], options:[]},
+  {name:"허니 애플 히비스커스", temps:["Hot","Ice"], options:[]},
+  {name:"허니 라임 루이보스", temps:["Hot","Ice"], options:[]},
+  {name:"허니 자몽 얼그레이", temps:["Hot","Ice"], options:[]},
+  {name:"허니 레몬 캐모마일", temps:["Hot","Ice"], options:[]},
+  {name:"1837블랙티", temps:["Hot","Ice"], options:[]},
+  {name:"프렌치얼그레이", temps:["Hot","Ice"], options:[]},
+  {name:"그랜드웨딩", temps:["Hot","Ice"], options:[]},
+  {name:"실버문티", temps:["Hot","Ice"], options:[]},
+  {name:"캐모마일", temps:["Hot","Ice"], options:[]},
+  {name:"크림카라멜(루이보스/디카페인)", temps:["Hot","Ice"], options:[]},
+];
+
+// depth1 flatten: [{label, options:[]}]
+const DEPTH1 = [];
+MENU.forEach(item=>{
+  item.temps.forEach(t=>{
+    DEPTH1.push({label:`${item.name} (${t})`, options:item.options});
+  });
+});
+const DEPTH1_MAP = {};
+DEPTH1.forEach(d=>DEPTH1_MAP[d.label]=d.options);
+
+/* ---------- 과거 주문 이력 시드 데이터 ---------- */
+const SEED_BATCHES = {
+  "seed_loop": {
+    "탁근찬":"아메리카노 (Ice)", "이은우":"아메리카노 (Hot)", "심규빈":"아메리카노 (Ice)",
+    "이윤라":"아메리카노 (Hot)", "홍석진":"아메리카노 (Ice)", "서준영":"아메리카노 (Hot)",
+    "원민경":"카페라떼 (Ice)"
+  },
+  "seed_0624": {
+    "김향":"허니 유자 페퍼민트 (Hot)", "이윤라":"아메리카노 (Hot)", "이은우":"아메리카노 (Hot)",
+    "김규동":"레몬에이드", "홍석진":"바닐라라떼 (Ice)", "서준영":"바닐라라떼 (Ice)",
+    "심규빈":"아메리카노 (Ice)", "원민경":"수제밀크티 (Ice)", "탁근찬":"아메리카노 (Ice)",
+    "백부경":"허니 유자 페퍼민트 (Hot)"
+  },
+  "seed_0902": {
+    "김형효":"카페라떼 (Ice)", "탁근찬":"아메리카노 (Ice)", "이윤라":"꿀대추차 (Hot)",
+    "백부경":"말차라떼(제주우유가능) (Ice)", "김규동":"아메리카노 (Ice)", "홍석진":"아메리카노 (Ice)",
+    "서준영":"아메리카노 (Hot)", "김혜림":"말차라떼(제주우유가능) (Ice)", "이은우":"아메리카노 (Hot)",
+    "심규빈":"아메리카노 (Ice)"
+  },
+  "seed_wolning": {
+    "탁근찬":"아메리카노 (Ice)", "이윤라":"쌍화차 (Hot)", "원민경":"카페라떼 (Ice)",
+    "백부경":"바닐라라떼 (Ice)", "김형효":"카페라떼 (Ice)", "홍석진":"아메리카노 (Ice)",
+    "서준영":"아메리카노 (Ice)", "김혜림":"아메리카노 (Ice)", "이은우":"아메리카노 (Hot)",
+    "심규빈":"아메리카노 (Ice)"
+  }
+};
+
+/* ---------- 날짜/시각 ---------- */
+function todayId(){
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+function todayDisplay(){
+  const d = new Date();
+  const days = ['일','월','화','수','목','금','토'];
+  return `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})`;
+}
+const TODAY_ID = todayId();
+document.getElementById('dateLine').textContent = todayDisplay();
+
+function updateClock(){
+  const d = new Date();
+  const hh = String(d.getHours()).padStart(2,'0');
+  const mm = String(d.getMinutes()).padStart(2,'0');
+  const ss = String(d.getSeconds()).padStart(2,'0');
+  document.getElementById('timeLine').textContent = `${hh}:${mm}:${ss}`;
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+/* ---------- 상태 ---------- */
+let allOrders = {};
+let dayClosed = false;
+// 시드(과거 이력) 배치는 항상 확정으로 취급, 실제 날짜는 주문마감 시에만 추가됨
+let confirmedDates = new Set(Object.keys(SEED_BATCHES));
+
+const memberListEl = document.getElementById('memberList');
+const rowState = {};
+
+function computeStats(member){
+  const counts = {};
+  Object.values(allOrders).forEach(o=>{
+    if(o.member === member && o.menu && confirmedDates.has(o.date)){
+      counts[o.menu] = (counts[o.menu]||0)+1;
+    }
+  });
+  const arr = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  const total = arr.reduce((s,[,c])=>s+c,0);
+  return {arr, total};
+}
+
+function getRecommendation(member){
+  const {arr, total} = computeStats(member);
+  if(total === 0 || arr.length===0) return null;
+  const [topLabel, topCount] = arr[0];
+  if(topCount/total >= 0.75){
+    return topLabel;
+  }
+  return null;
+}
+
+function splitSavedLabel(full){
+  const idx = full.indexOf(' - ');
+  if(idx === -1) return {depth1: full, option: null};
+  return {depth1: full.slice(0,idx), option: full.slice(idx+3)};
+}
+
+function buildRow(member){
+  const row = document.createElement('div');
+  row.className = 'member-row';
+  row.dataset.member = member;
+
+  /* 추천 라인 (드롭다운 왼쪽 변에 맞춰 정렬) */
+  const recLine = document.createElement('div');
+  recLine.className = 'rec-line';
+  const recBtn = document.createElement('button');
+  recBtn.className = 'recommend-btn';
+  recLine.appendChild(recBtn);
+
+  /* 메인 라인: 이름 + Depth1 + 저장/수정 */
+  const main = document.createElement('div');
+  main.className = 'row-main';
+
+  const nameEl = document.createElement('div');
+  nameEl.className = 'member-name';
+  nameEl.textContent = member;
+
+  const sel1 = document.createElement('select');
+  sel1.className = 'depth1-select';
+  const opt0 = document.createElement('option');
+  opt0.value = '';
+  opt0.textContent = '메뉴 선택';
+  sel1.appendChild(opt0);
+  DEPTH1.forEach(d=>{
+    const o = document.createElement('option');
+    o.value = d.label;
+    o.textContent = d.label;
+    sel1.appendChild(o);
+  });
+
+  const sel1Wrap = document.createElement('span');
+  sel1Wrap.className = 'select-wrap';
+  sel1Wrap.appendChild(sel1);
+
+  const btnGroup = document.createElement('div');
+  btnGroup.className = 'btn-group';
+  const saveBtn = document.createElement('button');
+  saveBtn.className = 'action save-btn';
+  saveBtn.textContent = '저장';
+  saveBtn.disabled = true;
+  const modBtn = document.createElement('button');
+  modBtn.className = 'action modify-btn';
+  modBtn.textContent = '수정';
+  modBtn.disabled = true;
+  btnGroup.appendChild(saveBtn);
+  btnGroup.appendChild(modBtn);
+
+  main.appendChild(nameEl);
+  main.appendChild(sel1Wrap);
+  main.appendChild(btnGroup);
+
+  /* Depth2 옵션 라인 (Depth1 선택 시에만 아래로 펼쳐짐, 다중 선택 가능한 칩) */
+  const optRow = document.createElement('div');
+  optRow.className = 'row-option';
+  const optLabel = document.createElement('span');
+  optLabel.className = 'opt-label';
+  optLabel.textContent = '옵션';
+  const optChips = document.createElement('div');
+  optChips.className = 'opt-chips';
+  optRow.appendChild(optLabel);
+  optRow.appendChild(optChips);
+
+  let selectedOptions = new Set();
+
+  const savedLabel = document.createElement('div');
+  savedLabel.className = 'saved-label';
+  savedLabel.style.display = 'none';
+
+  row.appendChild(recLine);
+  row.appendChild(main);
+  row.appendChild(optRow);
+  row.appendChild(savedLabel);
+
+  memberListEl.appendChild(row);
+
+  function setChipsDisabled(disabled){
+    optChips.querySelectorAll('.opt-chip').forEach(c=>{ c.disabled = disabled; });
+  }
+
+  function refreshOptions(){
+    const label = sel1.value;
+    const options = DEPTH1_MAP[label] || [];
+    optChips.innerHTML = '';
+    selectedOptions = new Set();
+    if(!label || options.length === 0){
+      optRow.style.display = 'none';
+      return;
+    }
+    optRow.style.display = 'flex';
+    options.forEach(op=>{
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'opt-chip';
+      chip.textContent = op;
+      chip.addEventListener('click', ()=>{
+        if(chip.disabled) return;
+        if(selectedOptions.has(op)){
+          selectedOptions.delete(op);
+          chip.classList.remove('active');
+        } else {
+          const group = EXCLUSIVE_GROUPS.find(g=>g.includes(op));
+          if(group){
+            group.forEach(other=>{
+              if(other !== op && selectedOptions.has(other)){
+                selectedOptions.delete(other);
+                const otherChip = Array.from(optChips.children).find(c=>c.textContent===other);
+                if(otherChip) otherChip.classList.remove('active');
+              }
+            });
+          }
+          selectedOptions.add(op);
+          chip.classList.add('active');
+        }
+      });
+      optChips.appendChild(chip);
+    });
+  }
+
+  function setSelectedOptions(optionList){
+    // optChips가 이미 refreshOptions()로 구성된 상태에서, 주어진 목록을 활성화
+    selectedOptions = new Set(optionList);
+    optChips.querySelectorAll('.opt-chip').forEach(c=>{
+      if(selectedOptions.has(c.textContent)) c.classList.add('active');
+      else c.classList.remove('active');
+    });
+  }
+
+  function refreshSaveEnabled(){
+    saveBtn.disabled = !sel1.value || dayClosed;
+  }
+
+  sel1.addEventListener('change', ()=>{
+    refreshOptions();
+    refreshSaveEnabled();
+  });
+
+  recBtn.addEventListener('click', ()=>{
+    const rec = recBtn.dataset.rec;
+    if(!rec) return;
+    const {depth1, option} = splitSavedLabel(rec);
+    sel1.value = depth1;
+    refreshOptions();
+    if(option) setSelectedOptions(option.split(', ').filter(Boolean));
+    refreshSaveEnabled();
+  });
+
+  saveBtn.addEventListener('click', async ()=>{
+    if(!sel1.value) return;
+    let full = sel1.value;
+    if(optRow.style.display !== 'none' && selectedOptions.size > 0){
+      full = `${sel1.value} - ${Array.from(selectedOptions).join(', ')}`;
+    }
+    saveBtn.disabled = true;
+    sel1.disabled = true;
+    setChipsDisabled(true);
+    const docId = `${TODAY_ID}_${member}`;
+    allOrders[docId] = {date:TODAY_ID, member, menu:full};
+    renderTodayList();
+    renderStats();
+    await postOrder(docId, TODAY_ID, member, full);
+    savedLabel.style.display = '';
+    savedLabel.innerHTML = `오늘 주문: <b>${full}</b>`;
+    modBtn.disabled = dayClosed;
+  });
+
+  modBtn.addEventListener('click', ()=>{
+    if(dayClosed) return;
+    sel1.disabled = false;
+    setChipsDisabled(false);
+    modBtn.disabled = true;
+    refreshSaveEnabled();
+  });
+
+  rowState[member] = {sel1, optChips, saveBtn, modBtn, recBtn, recLine, savedLabel, refreshOptions, refreshSaveEnabled, setChipsDisabled, setSelectedOptions};
+}
+
+MEMBERS.forEach(buildRow);
+
+function applyRecommendations(){
+  MEMBERS.forEach(member=>{
+    const rec = getRecommendation(member);
+    const st = rowState[member];
+    if(rec){
+      st.recLine.style.display = '';
+      st.recBtn.textContent = `추천: ${rec}`;
+      st.recBtn.dataset.rec = rec;
+      st.recBtn.disabled = dayClosed;
+    } else {
+      st.recLine.style.display = 'none';
+    }
+  });
+}
+
+function renderTodayList(){
+  const el = document.getElementById('todayList');
+  const statusEl = document.getElementById('todayStatus');
+  if(statusEl){
+    statusEl.textContent = dayClosed ? '확정' : '미확정';
+    statusEl.className = 'status-tag ' + (dayClosed ? 'confirmed' : 'unconfirmed');
+  }
+  const todays = Object.values(allOrders).filter(o=>o.date===TODAY_ID);
+  if(todays.length===0){
+    el.innerHTML = '<span class="empty">아직 저장된 주문이 없습니다</span>';
+    return;
+  }
+  // 메뉴(Depth1) > 옵션 순으로 그룹핑
+  const groups = {};
+  todays.forEach(o=>{
+    if(!groups[o.menu]) groups[o.menu] = [];
+    groups[o.menu].push(o.member);
+  });
+  const keys = Object.keys(groups);
+  keys.sort((a,b)=>{
+    const pa = splitSavedLabel(a), pb = splitSavedLabel(b);
+    const ia = DEPTH1.findIndex(d=>d.label===pa.depth1);
+    const ib = DEPTH1.findIndex(d=>d.label===pb.depth1);
+    const idxa = ia===-1 ? 9999 : ia;
+    const idxb = ib===-1 ? 9999 : ib;
+    if(idxa !== idxb) return idxa-idxb;
+    if(pa.depth1 !== pb.depth1) return pa.depth1.localeCompare(pb.depth1);
+    return (pa.option||'').localeCompare(pb.option||'');
+  });
+  el.innerHTML = keys.map(key=>{
+    const members = groups[key].sort((a,b)=>MEMBERS.indexOf(a)-MEMBERS.indexOf(b));
+    return `<div class="today-row"><span class="d">${key}</span><span class="m">${members.join(', ')} (${members.length}명)</span></div>`;
+  }).join('') + `<div class="today-total">총 ${todays.length}명</div>`;
+}
+
+function renderStats(){
+  const grid = document.getElementById('statsGrid');
+  grid.innerHTML = '';
+  MEMBERS.forEach(member=>{
+    const {arr} = computeStats(member);
+    const card = document.createElement('div');
+    card.className = 'stats-card';
+    const h = document.createElement('h3');
+    h.textContent = member;
+    card.appendChild(h);
+    if(arr.length===0){
+      const p = document.createElement('div');
+      p.className = 'stats-empty';
+      p.textContent = '누적 주문 내역 없음';
+      card.appendChild(p);
+    } else {
+      const ul = document.createElement('ul');
+      arr.forEach(([label,count])=>{
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${label}</span><span class="cnt">${count}회</span>`;
+        ul.appendChild(li);
+      });
+      card.appendChild(ul);
+    }
+    grid.appendChild(card);
+  });
+  applyRecommendations();
+}
+
+/* ---------- 주문 마감 ---------- */
+const closeBtn = document.getElementById('closeOrderBtn');
+const closedBanner = document.getElementById('closedBanner');
+
+function applyClosedUI(){
+  closeBtn.disabled = dayClosed;
+  closeBtn.textContent = dayClosed ? '주문 마감됨' : '주문 마감';
+  closedBanner.style.display = dayClosed ? '' : 'none';
+  MEMBERS.forEach(member=>{
+    const st = rowState[member];
+    st.saveBtn.disabled = true;
+    if(dayClosed){
+      st.modBtn.disabled = true;
+      st.sel1.disabled = true;
+      st.setChipsDisabled(true);
+      st.recBtn.disabled = true;
+    } else {
+      const hasSaved = st.savedLabel.style.display !== 'none';
+      st.modBtn.disabled = !hasSaved;
+      st.sel1.disabled = hasSaved;
+      st.setChipsDisabled(hasSaved);
+      st.recBtn.disabled = false;
+      if(!hasSaved) st.refreshSaveEnabled();
+    }
+  });
+  renderTodayList();
+}
+
+closeBtn.addEventListener('click', async ()=>{
+  dayClosed = true;
+  confirmedDates.add(TODAY_ID);
+  applyClosedUI();
+  renderStats();
+  await postMeta(TODAY_ID, true);
+});
+
+/* ---------- 오늘 이미 저장된 주문 반영 ---------- */
+function applyExistingTodaySaves(){
+  MEMBERS.forEach(member=>{
+    const docId = `${TODAY_ID}_${member}`;
+    const o = allOrders[docId];
+    const st = rowState[member];
+    if(o && o.menu){
+      const {depth1, option} = splitSavedLabel(o.menu);
+      st.sel1.value = depth1;
+      st.refreshOptions();
+      if(option) st.setSelectedOptions(option.split(', ').filter(Boolean));
+      st.sel1.disabled = true;
+      st.setChipsDisabled(true);
+      st.saveBtn.disabled = true;
+      st.modBtn.disabled = dayClosed;
+      st.savedLabel.style.display = '';
+      st.savedLabel.innerHTML = `오늘 주문: <b>${o.menu}</b>`;
+    }
+  });
+}
+
+/* ---------- 초기 렌더 (DB 연결 전) ---------- */
+renderTodayList();
+renderStats();
+
+/* ---------- 백엔드(API) 연동: /api/data 폴링 방식 ---------- */
+async function postOrder(docId, date, member, menu){
+  try{
+    await fetch('/api/data', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({type:'order', docId, data:{date, member, menu}})
+    });
+  }catch(e){ /* 네트워크 오류 시에도 화면 상태는 유지, 다음 폴링에서 재동기화 */ }
+}
+
+async function postMeta(date, closed){
+  try{
+    await fetch('/api/data', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({type:'meta', docId:date, data:{closed}})
+    });
+  }catch(e){}
+}
+
+async function fetchState(){
+  try{
+    const res = await fetch('/api/data', {cache:'no-store'});
+    if(!res.ok) return;
+    const json = await res.json();
+    const rawOrders = json.orders || {};
+    const rawMeta = json.meta || {};
+
+    const nextOrders = {};
+    Object.entries(rawOrders).forEach(([id, val])=>{
+      nextOrders[id] = (typeof val === 'string') ? JSON.parse(val) : val;
+    });
+    allOrders = nextOrders;
+
+    const nextConfirmed = new Set(Object.keys(SEED_BATCHES));
+    Object.entries(rawMeta).forEach(([date, val])=>{
+      const d = (typeof val === 'string') ? JSON.parse(val) : val;
+      if(d && d.closed) nextConfirmed.add(date);
+    });
+    confirmedDates = nextConfirmed;
+    dayClosed = confirmedDates.has(TODAY_ID);
+
+    applyClosedUI();
+    renderStats();
+    renderTodayList();
+    applyExistingTodaySaves();
+  }catch(e){ /* 폴링 실패는 조용히 무시하고 다음 주기에 재시도 */ }
+}
+
+function startPolling(){
+  fetchState();
+  setInterval(fetchState, 4000);
+}
+
+/* ---------- 탭 전환 + 스와이프 ---------- */
+const tabBtns = Array.from(document.querySelectorAll('.tab-btn'));
+const tabViewport = document.getElementById('tabViewport');
+const tabTrack = document.getElementById('tabTrack');
+let activeTab = 0;
+
+function setActiveTab(idx, animate=true){
+  activeTab = Math.max(0, Math.min(2, idx));
+  tabTrack.style.transition = animate ? 'transform 0.3s ease' : 'none';
+  tabTrack.style.transform = `translateX(-${activeTab*100}%)`;
+  tabBtns.forEach((b,i)=> b.classList.toggle('active', i===activeTab));
+}
+
+tabBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=> setActiveTab(parseInt(btn.dataset.idx,10)));
+});
+
+(function enableSwipe(){
+  let startX = 0, startY = 0, dragging = false, deltaX = 0, decided = false, isHorizontal = false;
+  tabViewport.addEventListener('pointerdown', (e)=>{
+    dragging = true;
+    decided = false;
+    isHorizontal = false;
+    startX = e.clientX;
+    startY = e.clientY;
+    deltaX = 0;
+    tabTrack.style.transition = 'none';
+  });
+  tabViewport.addEventListener('pointermove', (e)=>{
+    if(!dragging) return;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    if(!decided){
+      if(Math.abs(dx) > 8 || Math.abs(dy) > 8){
+        decided = true;
+        isHorizontal = Math.abs(dx) > Math.abs(dy);
+      }
+    }
+    if(decided && isHorizontal){
+      deltaX = dx;
+      const basePercent = -activeTab*100;
+      const viewportWidth = tabViewport.clientWidth || 1;
+      const deltaPercent = (deltaX / viewportWidth) * 100;
+      tabTrack.style.transform = `translateX(${basePercent + deltaPercent}%)`;
+    }
+  });
+  function endDrag(){
+    if(!dragging) return;
+    dragging = false;
+    if(decided && isHorizontal){
+      const threshold = 55;
+      if(deltaX > threshold) setActiveTab(activeTab-1);
+      else if(deltaX < -threshold) setActiveTab(activeTab+1);
+      else setActiveTab(activeTab);
+    }
+  }
+  tabViewport.addEventListener('pointerup', endDrag);
+  tabViewport.addEventListener('pointercancel', endDrag);
+  tabViewport.addEventListener('pointerleave', ()=>{ if(dragging) endDrag(); });
+})();
+
+startPolling();
+</script>
+</body>
+</html>
