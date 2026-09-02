@@ -3,6 +3,8 @@
 이 폴더를 그대로 Vercel에 올리면, claude.ai 밖에서도 팀원들이 실시간(4초 폴링)으로
 주문을 함께 저장/확인할 수 있는 웹앱이 됩니다.
 
+GitHub의 `main` 브랜치에 변경 사항을 push하면 Vercel이 자동으로 배포를 시작합니다.
+
 ## 구성
 - `index.html` — 화면 전체 (기존 페이지와 동일, 데이터 저장 방식만 백엔드 API 호출로 변경)
 - `api/data.js` — 서버리스 API. GET(전체 조회) / POST(저장) 을 처리하고, Upstash Redis에 데이터를 씁니다.
