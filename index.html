@@ -841,6 +841,7 @@ let allOrders = {};
 let dayClosed = false;
 // 시드(과거 이력) 배치는 항상 확정으로 취급, 실제 날짜는 주문마감 시에만 추가됨
 let confirmedDates = new Set(Object.keys(SEED_BATCHES));
+let editingMembers = new Set();
 
 const memberListEl = document.getElementById('memberList');
 const rowState = {};
@@ -1028,6 +1029,7 @@ function buildRow(member){
     if(optRow.style.display !== 'none' && selectedOptions.size > 0){
       full = `${sel1.value} - ${Array.from(selectedOptions).join(', ')}`;
     }
+    editingMembers.delete(member);
     saveBtn.disabled = true;
     sel1.disabled = true;
     setChipsDisabled(true);
@@ -1043,6 +1045,7 @@ function buildRow(member){
 
   modBtn.addEventListener('click', ()=>{
     if(dayClosed) return;
+    editingMembers.add(member);
     sel1.disabled = false;
     setChipsDisabled(false);
     modBtn.disabled = true;
@@ -1145,10 +1148,17 @@ function applyClosedUI(){
     const st = rowState[member];
     st.saveBtn.disabled = true;
     if(dayClosed){
+      editingMembers.delete(member);
       st.modBtn.disabled = true;
       st.sel1.disabled = true;
       st.setChipsDisabled(true);
       st.recBtn.disabled = true;
+    } else if(editingMembers.has(member)){
+      st.modBtn.disabled = true;
+      st.sel1.disabled = false;
+      st.setChipsDisabled(false);
+      st.recBtn.disabled = false;
+      st.saveBtn.disabled = !st.sel1.value;
     } else {
       const hasSaved = st.savedLabel.style.display !== 'none';
       st.modBtn.disabled = !hasSaved;
@@ -1175,6 +1185,13 @@ function applyExistingTodaySaves(){
     const docId = `${TODAY_ID}_${member}`;
     const o = allOrders[docId];
     const st = rowState[member];
+    if(editingMembers.has(member)){
+      st.sel1.disabled = false;
+      st.setChipsDisabled(false);
+      st.modBtn.disabled = true;
+      st.saveBtn.disabled = !st.sel1.value || dayClosed;
+      return;
+    }
     if(o && o.menu){
       const {depth1, option} = splitSavedLabel(o.menu);
       st.sel1.value = depth1;
