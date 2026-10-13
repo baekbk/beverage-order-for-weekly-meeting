@@ -257,28 +257,71 @@
     padding-right:2px;
   }
   .panel-head{
-    text-align:center;
-    margin-bottom:16px;
+    text-align:left;
+    margin-bottom:24px;
   }
-  .panel-head h2.section-title{
-    display:inline-block;
+  .panel-title-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding-bottom:10px;
+    border-bottom:2px solid rgba(242,103,138,0.82);
+  }
+  .panel-title-row h2.section-title{
+    display:block;
+    min-width:0;
+    margin:0;
+    padding:0;
+    border:0;
+  }
+  .tab-panel > h2.section-title{
+    display:block;
+    padding-bottom:10px;
+    border-bottom:2px solid rgba(242,103,138,0.82);
     margin-bottom:12px;
   }
-  .panel-head #closeOrderBtn{
-    margin:0 auto;
-  }
   .close-note{
-    max-width:480px;
-    margin:10px auto 0;
-    font-size:11.5px;
-    line-height:1.6;
-    color:var(--ink-soft);
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    min-width:0;
+    width:100%;
+    margin:14px 0 0;
+    padding:11px 14px;
+    border-left:3px solid var(--danger);
+    border-radius:4px;
+    background:rgba(255,143,166,0.14);
+    text-align:left;
+    font-size:12px;
+    line-height:1.5;
+    color:var(--danger-deep);
+  }
+  .close-note-icon{
+    flex:0 0 18px;
+    height:18px;
+    border-radius:50%;
+    background:rgba(255,143,166,0.24);
+    font-size:12px;
+    font-weight:800;
+    line-height:18px;
+    text-align:center;
+  }
+  .close-note-copy{
+    display:block;
+    min-width:0;
+  }
+  .close-note-copy strong{
+    font-weight:800;
   }
   #closeOrderBtn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
     background:linear-gradient(155deg, var(--danger), var(--danger-deep));
     color:#fff;
     border:none;
-    padding:9px 16px;
+    padding:7px 16px;
     border-radius:10px;
     font-size:13px;
     font-weight:700;
@@ -523,27 +566,97 @@
     color:var(--ink-soft);
     font-size:13px;
   }
+  .today-panel-header{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    gap:8px;
+    margin-bottom:14px;
+    padding-bottom:10px;
+    border-bottom:2px solid rgba(242,103,138,0.82);
+  }
+  .today-panel-header h2.section-title{
+    margin:0;
+    padding:0;
+    border:none;
+    font-size:16px;
+    line-height:1.2;
+    font-weight:800;
+    color:var(--ink);
+  }
+  .today-panel-header .status-tag{
+    margin-left:0;
+    font-size:12px;
+    padding:2px 10px;
+    border-radius:999px;
+    min-width:auto;
+    text-align:center;
+  }
+  .today-list{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+  .today-section{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .today-section-header{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    gap:12px;
+    padding:0 2px;
+  }
+  .today-section-header .section-name{
+    font-size:15px;
+    font-weight:800;
+    color:var(--ink);
+  }
+  .today-section-card{
+    background:var(--card);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:12px 16px 10px;
+    box-shadow:var(--shadow);
+  }
   .today-row{
     display:flex;
     justify-content:space-between;
+    align-items:flex-start;
     flex-wrap:wrap;
-    gap:2px 10px;
-    padding:6px 0;
+    gap:4px 12px;
+    padding:8px 0;
     border-bottom:1px dashed var(--border);
-    font-size:14px;
+    font-size:13px;
+    line-height:1.5;
   }
   .today-row:last-child{border-bottom:none;}
   .today-total{
-    margin-top:8px;
+    margin-top:10px;
     padding-top:10px;
     border-top:2px solid var(--border);
     text-align:right;
     font-weight:800;
-    font-size:14px;
+    font-size:13px;
     color:var(--accent-deep);
   }
-  .today-row .d{font-weight:700;color:var(--ink);}
-  .today-row .m{color:var(--accent-deep);font-weight:600;text-align:right;}
+  .today-row .d{
+    font-weight:700;
+    color:var(--ink);
+    flex:1 1 220px;
+    min-width:0;
+  }
+  .today-row .m{
+    color:var(--accent-deep);
+    font-weight:700;
+    text-align:right;
+    flex:0 0 auto;
+    white-space:nowrap;
+  }
   .stats-grid{
     display:flex;
     flex-direction:column;
@@ -583,6 +696,53 @@
     color:var(--ink-soft);
     font-size:13px;
   }
+  .stats-window-notice{
+    display:flex;
+    align-items:center;
+    margin:0 0 14px;
+    padding:10px 14px;
+    border-left:3px solid var(--accent2);
+    border-radius:4px;
+    background:rgba(147,180,245,0.14);
+    color:var(--accent2-deep);
+    font-size:12px;
+    font-weight:700;
+    line-height:1.5;
+  }
+  .stats-card li.has-tooltip{
+    position:relative;
+    cursor:help;
+  }
+  .stats-card li.has-tooltip:focus-visible{
+    outline:2px solid var(--accent2);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+  .stats-tooltip{
+    display:none;
+    position:absolute;
+    left:0;
+    bottom:calc(100% + 8px);
+    z-index:5;
+    width:max-content;
+    max-width:min(360px, calc(100vw - 48px));
+    padding:10px 12px;
+    border:1px solid rgba(255,255,255,0.22);
+    border-radius:8px;
+    background:var(--accent2-deep);
+    box-shadow:0 4px 14px rgba(30,45,90,0.24);
+    color:#fff;
+    font-size:11px;
+    font-weight:500;
+    line-height:1.55;
+    white-space:pre-line;
+    text-align:left;
+    pointer-events:none;
+  }
+  .stats-card li.has-tooltip:hover .stats-tooltip,
+  .stats-card li.has-tooltip:focus-visible .stats-tooltip{
+    display:block;
+  }
   .footnote{
     text-align:center;
     font-size:11px;
@@ -592,6 +752,7 @@
   @media (max-width:420px){
     .member-name{width:48px;font-size:14px;}
     :root{ --name-col:48px; }
+    .close-note{gap:7px;padding:9px 10px;font-size:11px;}
   }
 </style>
 </head>
@@ -687,23 +848,33 @@
 
       <div class="tab-panel">
         <div class="panel-head">
-          <h2 class="section-title">메뉴 주문</h2>
-          <div><button id="closeOrderBtn">주문 마감</button></div>
-          <p class="close-note">*주문 마감 버튼은 주문자가 주문 마감 시간을 미리 구성원에게 공유하고 주문을 확정하기 위해 클릭/터치합니다. 주문이 확정되고 나면 구성원들은 주문을 변경할 수 없습니다.</p>
+          <div class="panel-title-row">
+            <h2 class="section-title">🥤 메뉴 주문</h2>
+            <button id="closeOrderBtn">주문 마감</button>
+          </div>
+          <p class="close-note">
+            <span class="close-note-icon" aria-hidden="true">!</span>
+            <span class="close-note-copy">
+              <strong>마감 후에는 주문을 변경할 수 없습니다.</strong>
+              <strong>마감 시각을 구성원에게 공유한 뒤 눌러주세요.</strong>
+            </span>
+          </p>
         </div>
         <div class="closed-banner" id="closedBanner">오늘 주문이 마감되었습니다</div>
         <div id="memberList"></div>
       </div>
 
       <div class="tab-panel">
-        <h2 class="section-title">오늘의 주문 현황 <span id="todayStatus" class="status-tag"></span></h2>
-        <div style="height:12px;"></div>
+        <div class="today-panel-header">
+          <h2 class="section-title">🧾 오늘의 주문 현황</h2>
+          <span id="todayStatus" class="status-tag"></span>
+        </div>
         <div class="today-list" id="todayList"><span class="empty">아직 저장된 주문이 없습니다</span></div>
       </div>
 
       <div class="tab-panel">
-        <h2 class="section-title">멤버별 누적 주문 통계</h2>
-        <div style="height:12px;"></div>
+        <h2 class="section-title">📊 멤버별 누적 주문 통계</h2>
+        <p class="stats-window-notice">3개월 이내로 주문 확정된 데이터를 기준으로 집계된 결과입니다.</p>
         <div class="stats-grid" id="statsGrid"></div>
       </div>
 
@@ -846,14 +1017,44 @@ let editingMembers = new Set();
 const memberListEl = document.getElementById('memberList');
 const rowState = {};
 
+function getStatsCutoffDate(){
+  const today = new Date();
+  const cutoffMonth = new Date(today.getFullYear(), today.getMonth()-3, 1);
+  const lastDayOfCutoffMonth = new Date(cutoffMonth.getFullYear(), cutoffMonth.getMonth()+1, 0).getDate();
+  cutoffMonth.setDate(Math.min(today.getDate(), lastDayOfCutoffMonth));
+  const year = cutoffMonth.getFullYear();
+  const month = String(cutoffMonth.getMonth()+1).padStart(2, '0');
+  const day = String(cutoffMonth.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function getRecentConfirmedOrders(member){
+  const cutoffDate = getStatsCutoffDate();
+  return Object.values(allOrders).filter(order=>
+    order.member === member &&
+    order.menu &&
+    confirmedDates.has(order.date) &&
+    /^\d{4}-\d{2}-\d{2}$/.test(order.date) &&
+    order.date >= cutoffDate &&
+    order.date <= TODAY_ID
+  );
+}
+
+function formatStatsOrderDate(dateId){
+  const [year, month, day] = dateId.split('-').map(Number);
+  const date = new Date(year, month-1, day);
+  const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+  return `${year}.${String(month).padStart(2, '0')}.${String(day).padStart(2, '0')} (${weekdays[date.getDay()]})`;
+}
+
 function computeStats(member){
   const counts = {};
-  Object.values(allOrders).forEach(o=>{
-    if(o.member === member && o.menu && confirmedDates.has(o.date)){
-      counts[o.menu] = (counts[o.menu]||0)+1;
-    }
+  getRecentConfirmedOrders(member).forEach(order=>{
+    counts[order.menu] = (counts[order.menu]||0)+1;
   });
-  const arr = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  const arr = Object.entries(counts).sort((a,b)=>
+    b[1]-a[1] || a[0].localeCompare(b[0], 'ko')
+  );
   const total = arr.reduce((s,[,c])=>s+c,0);
   return {arr, total};
 }
@@ -1075,21 +1276,23 @@ function applyRecommendations(){
 function renderTodayList(){
   const el = document.getElementById('todayList');
   const statusEl = document.getElementById('todayStatus');
+  const statusClass = dayClosed ? 'confirmed' : 'unconfirmed';
+  const statusText = dayClosed ? '확정' : '미확정';
   if(statusEl){
-    statusEl.textContent = dayClosed ? '확정' : '미확정';
-    statusEl.className = 'status-tag ' + (dayClosed ? 'confirmed' : 'unconfirmed');
+    statusEl.textContent = statusText;
+    statusEl.className = 'status-tag ' + statusClass;
   }
+
   const todays = Object.values(allOrders).filter(o=>o.date===TODAY_ID);
-  if(todays.length===0){
-    el.innerHTML = '<span class="empty">아직 저장된 주문이 없습니다</span>';
-    return;
-  }
-  // 메뉴(Depth1) > 옵션 순으로 그룹핑
+  const orderedMembers = new Set(todays.map(o=>o.member));
+  const notOrderedMembers = MEMBERS.filter(member => !orderedMembers.has(member));
+
   const groups = {};
   todays.forEach(o=>{
     if(!groups[o.menu]) groups[o.menu] = [];
     groups[o.menu].push(o.member);
   });
+
   const keys = Object.keys(groups);
   keys.sort((a,b)=>{
     const pa = splitSavedLabel(a), pb = splitSavedLabel(b);
@@ -1101,10 +1304,38 @@ function renderTodayList(){
     if(pa.depth1 !== pb.depth1) return pa.depth1.localeCompare(pb.depth1);
     return (pa.option||'').localeCompare(pb.option||'');
   });
-  el.innerHTML = keys.map(key=>{
-    const members = groups[key].sort((a,b)=>MEMBERS.indexOf(a)-MEMBERS.indexOf(b));
-    return `<div class="today-row"><span class="d">${key}</span><span class="m">${members.join(', ')} (${members.length}명)</span></div>`;
-  }).join('') + `<div class="today-total">총 ${todays.length}명</div>`;
+
+  const orderedHtml = `
+    <div class="today-section">
+      <div class="today-section-header">
+        <span class="section-name">주문 받은 메뉴</span>
+      </div>
+      <div class="today-section-card">
+        ${keys.length > 0 ? keys.map(key=>{
+          const members = groups[key].sort((a,b)=>MEMBERS.indexOf(a)-MEMBERS.indexOf(b));
+          return `<div class="today-row"><span class="d">${key}</span><span class="m">${members.join(', ')} (${members.length}명)</span></div>`;
+        }).join('') : '<div class="empty">아직 저장된 주문이 없습니다</div>'}
+        <div class="today-total">총 ${todays.length}명</div>
+      </div>
+    </div>
+  `;
+
+  const noOrderText = notOrderedMembers.length > 0 ? notOrderedMembers.join(', ') : '없음';
+  const noOrderHtml = `
+    <div class="today-section">
+      <div class="today-section-header">
+        <span class="section-name">주문 안 한 CP님</span>
+      </div>
+      <div class="today-section-card">
+        <div class="today-row">
+          <span class="d">${noOrderText}</span>
+          <span class="m">총 ${notOrderedMembers.length}명</span>
+        </div>
+      </div>
+    </div>
+  `;
+
+  el.innerHTML = orderedHtml + noOrderHtml;
 }
 
 function renderStats(){
@@ -1126,7 +1357,26 @@ function renderStats(){
       const ul = document.createElement('ul');
       arr.forEach(([label,count])=>{
         const li = document.createElement('li');
-        li.innerHTML = `<span>${label}</span><span class="cnt">${count}회</span>`;
+        li.className = 'has-tooltip';
+        li.tabIndex = 0;
+        const recentOrders = getRecentConfirmedOrders(member)
+          .filter(order=>order.menu === label)
+          .sort((a,b)=>b.date.localeCompare(a.date))
+          .slice(0, 15);
+        const tooltipLines = recentOrders.map(order=>`${formatStatsOrderDate(order.date)} ${order.menu}`);
+        li.setAttribute('aria-label', `${label}, ${count}회. ${tooltipLines.join('. ')}`);
+
+        const labelText = document.createElement('span');
+        labelText.textContent = label;
+        const countText = document.createElement('span');
+        countText.className = 'cnt';
+        countText.textContent = `${count}회`;
+        const tooltip = document.createElement('span');
+        tooltip.className = 'stats-tooltip';
+        tooltip.setAttribute('aria-hidden', 'true');
+        tooltip.textContent = tooltipLines.join('\n');
+
+        li.append(labelText, countText, tooltip);
         ul.appendChild(li);
       });
       card.appendChild(ul);
